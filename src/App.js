@@ -1,11 +1,16 @@
 
 import { Switch, Route } from 'react-router-dom';
+import { lazy,Suspense } from 'react';
 import './App.css';
 import AppBar from './components/AppBar/AppBar';
 import Container from './components/Container/Container';
-import HomeView from './views/HomeView/HomeView';
-import SingleFilmView from './views/SingleFilmView/SingleFilmView';
-import MoviesSearchView from './views/MoviesSearchView/MoviesSearchView';
+import PendingView from './views/PendingView/PendingView';
+
+const HomeView = lazy(() => import('./views/HomeView/HomeView' /*webpackChunkName: "HomeView"*/));
+const SingleFilmView = lazy(() => import('./views/SingleFilmView/SingleFilmView' /*webpackChunkName: "SingleFilmView"*/));
+const MoviesSearchView = lazy(() => import('./views/MoviesSearchView/MoviesSearchView'  /*webpackChunkName: "MoviesSearchView"*/));
+
+
 
 
 export default function App() {
@@ -13,7 +18,7 @@ export default function App() {
     <Container>
        <AppBar/>
   
-    
+    <Suspense fallback={<PendingView/>}>
     <Switch>
       <Route path="/" exact>
         <HomeView/>
@@ -24,7 +29,8 @@ export default function App() {
      <Route path="/movies">
         <MoviesSearchView/>
       </Route>
-    </Switch> 
+        </Switch> 
+        </Suspense>
     </Container>
 
   );

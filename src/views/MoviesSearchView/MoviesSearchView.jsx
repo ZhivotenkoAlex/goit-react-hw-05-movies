@@ -27,7 +27,7 @@ export default function MoviesSearchView() {
     <>
             < Searchbar onSubmit={onSubmit} />
             < FilmStatus filmName={filmName} requestUrl={requestUrl} />
-            
+  
         </>
 )
 };

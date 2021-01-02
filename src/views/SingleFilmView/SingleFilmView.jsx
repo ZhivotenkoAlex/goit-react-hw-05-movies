@@ -1,17 +1,18 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect,lazy,Suspense } from 'react';
+
 import {useParams,NavLink,Route,useRouteMatch,Switch} from 'react-router-dom';
 
 import { fetchPrimaryInfoAboutFilm, IMAGE_URL } from '../../services/film-api';
 import s from './SingleFilmView.module.css';
+import PendingView from '../PendingView/PendingView';
 
-import Cast from '../CastView/CastView';
-
-import ReviewView from '../ReviewView/ReviewView';
+const CastView = lazy(() => import('../CastView/CastView' /*webpackChunkName: "CastView"*/) )
+const ReviewView=lazy(()=>import('../ReviewView/ReviewView'  /*webpackChunkName: "ReviewView"*/))
 
 
 export default function SingleFilmsView() {
   const {moviesId} = useParams();
-  const [film, setFilm] = useState([]); 
+  const [film, setFilm] = useState(null); 
   const {url,path} = useRouteMatch();
   
  
@@ -20,8 +21,9 @@ export default function SingleFilmsView() {
     () => {
       fetchPrimaryInfoAboutFilm(moviesId).then(setFilm)}, [moviesId]);
   
-    return (
-        <>
+    return (<>
+      { film && (
+            <>
             <div>
                 <div className={s.wrapper}>
               <div className={s.image__wrapper} >
@@ -60,18 +62,20 @@ export default function SingleFilmsView() {
                 </NavLink>
             </nav>
 
-    
+            <Suspense fallback={<PendingView/>}>
             <Switch>
                 <Route path={`${path}:moviesid/cast`}>
-                    <Cast moviesId={moviesId}/>
+                    <CastView moviesId={moviesId}/>
                 </Route>      
                  <Route path={`${path}:movieId/review`}>
                     <ReviewView movieId={moviesId} />
                  </Route>
             </Switch>
-       
+           </Suspense>
             </div>
             </> 
+      )}
+      </>
         )}
   
   

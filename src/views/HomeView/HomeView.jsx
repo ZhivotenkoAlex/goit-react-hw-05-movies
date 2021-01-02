@@ -30,37 +30,43 @@ export default function HomeView() {
       })
      
     }, []);
-  
-  if (status===Status.PENDING) {
-    return <PendingView/>
+
+
+  if (status === Status.PENDING) {
+    
+    return <PendingView />
+    
   };
-  if (status===Status.REJECTED) {
-    return <ErrorView message={error.message}/>
+
+  if (status === Status.REJECTED) {
+    
+    return <ErrorView message={error.message} />
+    
   };
-  if (status===Status.RESOLVED) {
-    return ( <>
-      {films && (
-          <>
-            <h2 className={s.title}>Most Populars films for today</h2>
-            <ul className={s.list}>
-              {films.map(film => (
-                <>
-                  {film && (
-                    <li key={film.id} className={s.list__item}>
-                      <Link className={s.title} to={`${url}movies/${film.id}`}>
-                       <img className={s.image} src={`${IMAGE_URL}${film.poster_path}`} alt={film.title||film.name}/>
-                        <div className={s.decsr}>
-                            <h3 className={s.subtitle}>{film.title || film.name}</h3>
-                            <p className={s.rating}>Rating: { film.vote_average}</p>
-                        </div>
-                      </Link>
-                    </li>
-                  )}
-                </>
-              ))}
-            </ul>
-          </>
-        )}
+
+  if (status === Status.RESOLVED) {
+    
+    return (
+    <>
+      <h2 className={s.title}>Most Populars films for today</h2>
+      <ul className={s.list}>
+        {films.map(film => (
+          <li key={film.id} className={s.list__item}>
+            <Link className={s.title} to={`${url}movies/${film.id}`}>
+
+              <img className={s.image} src={`${IMAGE_URL}${film.poster_path}`} alt={film.title || film.name} />
+              
+              <div className={s.decsr}>
+                
+                <h3 className={s.subtitle}>{film.title || film.name}</h3>
+                <p className={s.rating}>Rating: {film.vote_average}</p>
+                
+              </div>
+            </Link>
+          </li>        
+               ))}
+      </ul>
+     
     </>)
   }
 

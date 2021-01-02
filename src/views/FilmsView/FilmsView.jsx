@@ -1,6 +1,7 @@
 import { Link, useRouteMatch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { IMAGE_URL } from '../../services/film-api';
+import photo from '../../images/movie-roll-court.jpg'
 import s from './FilmsView.module.css';
 
 export default function FilmsView({ films }) {
@@ -9,13 +10,11 @@ export default function FilmsView({ films }) {
   return (
     <ul className={s.list}>
       {films.map(film => (
-        <>
-          {film.poster_path && (
-            <li key={film.id} className={s.item}>
+              <li key={film.id} className={s.item}>
               <Link to={`${url}/${film.id}`} className={s.link}>
                 <img
                   className={s.image}
-                  src={IMAGE_URL + film.poster_path}
+                  src={film.poster_path?IMAGE_URL + film.poster_path:photo}
                   alt={film.title}
                   width="300"
                   height="450"
@@ -23,9 +22,7 @@ export default function FilmsView({ films }) {
                 <p className={s.title}>{film.title}</p>
               </Link>
             </li>
-          )}
-        </>
-      ))}
+     ))}
     </ul>
   );
 }
